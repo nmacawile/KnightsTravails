@@ -2,8 +2,8 @@ class Node
 	
 	attr_accessor :previous_node, :value, :next_nodes
 	
-	def initialize(value, link = false)
-		@value = value if value[0].between?(0, 7) && value[1].between?(0, 7)
+	def initialize(x, y, link = false)
+		@value = [x, y] if x.between?(0, 7) && y.between?(0, 7)
 		@next_nodes = []
 		create_links if link
 	end
@@ -25,7 +25,7 @@ class Node
 				[-1,1].each do |a_sign|
 					[-1,1].each do |b_sign|
 						next if a == b
-						self.add self.class.new([x + a * a_sign, y + b * b_sign])
+						self.add self.class.new(x + a * a_sign, y + b * b_sign)
 					end
 				end
 			end
@@ -44,8 +44,7 @@ class Node
 			
 			node.next_nodes.each do |n|
 				queue.unshift(n)
-			end
-			
+			end			
 		end
 	end
 	
@@ -53,9 +52,8 @@ end
 
 def knight_travails(start_point, end_point)
 	output = []
-	a = end_point[0]
-	b = end_point[1]
-	path = Node.new(start_point).find_path(a, b)
+ 
+	path = Node.new(*start_point).find_path(*end_point)
 	
 	output << path.value
 	until path.previous_node.nil? do
