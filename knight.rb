@@ -19,14 +19,18 @@ class Node
 	
 	def create_links
 		x, y = value
-		self.add self.class.new([x+2, y+1])
-		self.add self.class.new([x+2, y-1])
-		self.add self.class.new([x-2, y+1])
-		self.add self.class.new([x-2, y-1])
-		self.add self.class.new([x+1, y+2])
-		self.add self.class.new([x+1, y-2])
-		self.add self.class.new([x-1, y+2])
-		self.add self.class.new([x-1, y-2])
+
+		[1,2].each do |a|
+			[1,2].each do |b|
+				[-1,1].each do |a_sign|
+					[-1,1].each do |b_sign|
+						next if a == b
+						self.add self.class.new([x + a * a_sign, y + b * b_sign])
+					end
+				end
+			end
+		end
+
 	end
 	
 	def find_path(x, y)
@@ -47,13 +51,22 @@ class Node
 	
 end
 
-node = Node.new([3, 3])
-#p node
-path = node.find_path(3, 4)
-puts path
-
-until path.previous_node.nil? do
-	path = path.previous_node
-	puts path
+def knight_travails(start_point, end_point)
+	output = []
+	a = end_point[0]
+	b = end_point[1]
+	path = Node.new(start_point).find_path(a, b)
+	
+	output << path.value
+	until path.previous_node.nil? do
+		path = path.previous_node
+		output << path.value
+	end
+	count = output.count - 1
+	puts "You made it in #{count} moves! Here's your path:"
+	output.reverse.each do |point| 
+		p point
+	end
 end
-#p node
+
+knight_travails([3,3],[0,0])
