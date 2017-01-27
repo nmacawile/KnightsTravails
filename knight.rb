@@ -52,15 +52,15 @@ end
 
 def knight_travails(start_point, end_point)
 	output = []
- 
+ 	
 	path = Node.new(*start_point).find_path(*end_point)
 	
-	output << path.value
-	until path.previous_node.nil? do
-		path = path.previous_node
+	until path.previous_node.nil? do		
 		output << path.value
+		path = path.previous_node
 	end
-	count = output.count - 1
+	count = output.count
+	puts "Finding path from cell #{start_point.inspect} to cell #{end_point.inspect}"
 	puts "You made it in #{count} moves! Here's your path:"
 	output.reverse.each do |point| 
 		p point
